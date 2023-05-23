@@ -2,10 +2,13 @@
 - [x] add way to create novel cards
 - [x] put some css
 - [x] add compatibility with series and comics
+
 - [ ] add a way to add custom covers
-- [ ] make the way the cards load not so spaghetti
+- [x] make the way the cards load not so spaghetti
 - [ ] make the forms stop looking like trash
 - [ ] add a way to move the cards up or down
 - [ ] add a way to edit the info of the cards
 - [ ] add a way to back up data
 - [ ] maybe add integration with a database
+
+
