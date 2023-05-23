@@ -18,7 +18,8 @@ while (count != senior_numbers) {
 	/*Appends the html for the novel cards*/
 	log(count)
 	senior_card_html = `
-	<div class="card ` + count + `">
+	<div class="card x` + count + `">
+	<p class="card-edit"><a href="javascript:editCard('div.card.x`+count+`')"><img src="img/edit.png" width="20" height="20"></a></p>
 	<p class="card-title">`+senior_data.seniors[count].title+`</p>
 	
 	<center>
@@ -26,14 +27,60 @@ while (count != senior_numbers) {
 	</center>
 	
 	<div class="senior-info">
-	<p><span class="faint">`+chapter+`</span>`+senior_data.seniors[count].chapter+`</p>
-	<p><span class="faint">Status: </span>`+senior_data.seniors[count].status+`</p>
+	<p><span class="faint">`+chapter+`</span><span class="data-chapter">`+senior_data.seniors[count].chapter+`</span></p>
+	<p><span class="faint">Status: </span><span class="data-status">`+senior_data.seniors[count].status+`<span></p>
 	</div>
 	
 	</div>`
 	element('div.senior-cards').insertAdjacentHTML('beforeend', senior_card_html)
 	count++
+}}
+
+function editCard(vari){
+//pre selects the type 
+	function getTypeOptions(){
+		if(element(vari+' p.card-type').innerText == 'Novel'){return "<option value='Novel' selected='selected'>Novel</option><option value='Comic'>Comic</option><option value='Series'>Series</option>"} //If novel, select novel
+		if(element(vari+' p.card-type').innerText == 'Comic'){return "<option value='Novel'>Novel</option><option value='Comic' selected='selected'>Comic</option><option value='Series'>Series</option>"} //If comic, select comic
+		if(element(vari+' p.card-type').innerText == 'Series'){return "<option value='Novel'>Novel</option><option value='Comic'>Comic</option><option value='Series' selected='selected'>Series</option>"} //If series, select series
+	}
+	
+	function getStatusOptions(){
+		if(element(vari+' span.data-status').innerText == 'Currently Reading'){return "<option value='Currently Reading' selected='selected'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'Waiting for Updates'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates' selected='selected'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'On a Hiatus'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus' selected='selected'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'Finished'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished' selected='selected'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'To Read / Watch'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch' selected='selected'>To Read / Watch</option>"}
+	}
+	
+//da html for the edit forms thing. def needs css
+	element(vari).innerHTML = `
+	<div class='edit-forms'>
+	<label for='card-title'>Title: </label>
+	<input type='text' name='card-title' class='card-title' value='`+element(vari+' p.card-title').innerText+`'>
+	<br><br>
+	<label for='card-status'>Type: </label>
+		<select name='card-type' class='card-type'>
+			`+getTypeOptions()+`
+		</select>
+	<br><br>
+	<label for='card-chapter' class='chapter-name'>Chapter: </label>
+		<input type='number' name='card-chapter' class='card-chapter' value='`+element(vari+' span.data-chapter').innerText+`'>
+	<br><br>
+	<label for='card-status'>Status: </label>
+	<select name='card-status' class='card-status'>
+		`+getStatusOptions()+`
+	</select>
+	<p class='edit-save'><a href="javascript:saveEdit('`+vari+`')">Save</a></p>
+	</div>
+`
 }
+
+function saveEdit(vari){
+	senior_data.seniors[vari.slice(10)].title = element(vari+' input.card-title').value
+	senior_data.seniors[vari.slice(10)].type = element(vari+' select.card-type').value
+	senior_data.seniors[vari.slice(10)].chapter = element(vari+' input.card-chapter').value
+	senior_data.seniors[vari.slice(10)].status = element(vari+' select.card-status').value
+	reloadCard()
 }
 /*da css*/
 addCSS(`
@@ -76,8 +123,17 @@ addCSS(`
 	div.senior-info {
 		padding-left: 0.5em;
 	}
-	span.card-edit{
-		margin-left: 1em;
+	p.card-edit{
+		margin-left: 0.5em;
+	}
+	div.edit-forms{
+		margin: 1em 2em 1em 2em;
+	}
+	p.edit-save a{
+		color: cyan;
+	}
+	p.edit-save {
+		text-align: right;
 	}
 `)
 
