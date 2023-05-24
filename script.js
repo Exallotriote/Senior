@@ -80,6 +80,7 @@ function saveEdit(vari){
 	senior_data.seniors[vari.slice(10)].type = element(vari+' select.card-type').value
 	senior_data.seniors[vari.slice(10)].chapter = element(vari+' input.card-chapter').value
 	senior_data.seniors[vari.slice(10)].status = element(vari+' select.card-status').value
+	localStorage.setItem('senior_db', JSON.stringify(senior_data))
 	reloadCard()
 }
 /*da css*/

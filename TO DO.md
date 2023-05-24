@@ -15,5 +15,4 @@
 - [ ] add a way to move the cards up or down
 - [ ] add a way to back up data
 - [ ] maybe add integration with a database
-- [ ] add sorting stuff
-
+- [ ] add sorting stuff 
