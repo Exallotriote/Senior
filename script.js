@@ -19,7 +19,14 @@ while (count != senior_numbers) {
 	log(count)
 	senior_card_html = `
 	<div class="card x` + count + `">
-	<p class="card-edit"><a href="javascript:editCard('div.card.x`+count+`')"><img src="img/edit.png" width="20" height="20"></a></p>
+	
+	<div class="card-buttons"><p>
+	<span class="card-edit"><a href="javascript:editCard('div.card.x`+count+`')"><img src="img/edit.png" width="20" height="20"></a></span>
+	<span class="card-up"><a href="javascript:moveUp(`+count+`)"><img src="img/up.png" width="20" height="20"></a></span>
+	<br>
+	<span class="card-down"><a href="javascript:moveDown(`+count+`)"><img src="img/down.png" width="20" height="20"></a></span>
+	</p></div>
+	
 	<p class="card-title">`+senior_data.seniors[count].title+`</p>
 	
 	<center>
@@ -45,11 +52,11 @@ function editCard(vari){
 	}
 	
 	function getStatusOptions(){
-		if(element(vari+' span.data-status').innerText == 'Currently Reading'){return "<option value='Currently Reading' selected='selected'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
-		if(element(vari+' span.data-status').innerText == 'Waiting for Updates'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates' selected='selected'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
-		if(element(vari+' span.data-status').innerText == 'On a Hiatus'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus' selected='selected'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
-		if(element(vari+' span.data-status').innerText == 'Finished'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished' selected='selected'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
-		if(element(vari+' span.data-status').innerText == 'To Read / Watch'){return "<option value='Currently Reading'>Currently Reading</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch' selected='selected'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'Currently Reading / Watching'){return "<option value='Currently Reading / Watching' selected='selected'>Currently Reading / Watching</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'Waiting for Updates'){return "<option value='Currently Reading / Watching'>Currently Reading / Watching</option><option value='Waiting for Updates' selected='selected'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'On a Hiatus'){return "<option value='Currently Reading / Watching'>Currently Reading / Watching</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus' selected='selected'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'Finished'){return "<option value='Currently Reading / Watching'>Currently Reading / Watching</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished' selected='selected'>Finished</option><option value='To Read / Watch'>To Read / Watch</option>"}
+		if(element(vari+' span.data-status').innerText == 'To Read / Watch'){return "<option value='Currently Reading / Watching'>Currently Reading / Watching</option><option value='Waiting for Updates'>Waiting for Updates</option><option value='On a Hiatus'>On a Hiatus</option><option value='Finished'>Finished</option><option value='To Read / Watch' selected='selected'>To Read / Watch</option>"}
 	}
 	
 //da html for the edit forms thing. def needs css
@@ -70,8 +77,11 @@ function editCard(vari){
 	<select name='card-status' class='card-status'>
 		`+getStatusOptions()+`
 	</select>
-	<p class='edit-save'><a href="javascript:saveEdit('`+vari+`')">Save</a></p>
-	</div>
+	<p>
+	<div class='edit-bottom edit'><a href="javascript:saveEdit('`+vari+`')">Save</a></div>
+	<div class='edit-bottom delete'><a href="javascript:deleteCard(`+vari.slice(10)+`)">Delete</a></div>
+	</p>
+	<br>
 `
 }
 
@@ -82,6 +92,30 @@ function saveEdit(vari){
 	senior_data.seniors[vari.slice(10)].status = element(vari+' select.card-status').value
 	localStorage.setItem('senior_db', JSON.stringify(senior_data))
 	reloadCard()
+}
+
+function deleteCard(vari){
+	senior_data.seniors.splice(vari, 1)
+	localStorage.setItem('senior_db', JSON.stringify(senior_data))
+	reloadCard()
+}
+
+function moveUp(vari){
+	if (vari == 0){;}
+	else{
+		[senior_data.seniors[vari], senior_data.seniors[vari-1]] = [senior_data.seniors[vari-1], senior_data.seniors[vari]]
+		localStorage.setItem('senior_db', JSON.stringify(senior_data))
+		reloadCard()
+	}
+}
+
+function moveDown(vari){
+	if (vari == senior_data.seniors.length-1){;}
+	else{
+		[senior_data.seniors[vari], senior_data.seniors[vari+1]] = [senior_data.seniors[vari+1], senior_data.seniors[vari]]
+		localStorage.setItem('senior_db', JSON.stringify(senior_data))
+		reloadCard()
+	}
 }
 /*da css*/
 addCSS(`
@@ -124,17 +158,29 @@ addCSS(`
 	div.senior-info {
 		padding-left: 0.5em;
 	}
-	p.card-edit{
+	span.card-edit{
 		margin-left: 0.5em;
+		float: left;
+	}
+	span.card-up{
+		float: right;
+		margin-right: 0.5em;
+	}
+	span.card-down{
+		float: right;
+		margin-right: 0.5em;
 	}
 	div.edit-forms{
 		margin: 1em 2em 1em 2em;
 	}
-	p.edit-save a{
+
+	div.edit-bottom.edit a{
+		float: left;
 		color: cyan;
 	}
-	p.edit-save {
-		text-align: right;
+	div.edit-bottom.delete a{
+		float: right;
+		color: #ff3333;	
 	}
 `)
 

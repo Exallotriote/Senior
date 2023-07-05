@@ -4,15 +4,19 @@
 - [x] add compatibility with series and comics
 - [x] make the way the cards load not so spaghetti
 - [x] add a way to edit the info of the cards
-- [ ] new card through link
-- [ ] **author name**
+- [x] turn "Currently Reading" into "Currently Reading /  Watching"
+- [x] add a way to remove a card
+- [x] add a way to move the cards up or down
+- [ ] **make the forms stop looking like trash**
 - [ ] **star rating**
-- [ ] **make current info neccessary**
+- [ ] **add sorting stuff** 
+- [ ] new card through link
+- [ ] make current info neccessary
 - [ ] make the edit form look better
-- [ ] **add a way to add custom covers** (im not really sure how this will work out)
-- [ ] **add a way to remove a card**
-- [ ] make the forms stop looking like trash
-- [ ] add a way to move the cards up or down
+- [ ] add a way to add custom covers (im not really sure how this will work out)
 - [ ] add a way to back up data
 - [ ] maybe add integration with a database
-- [ ] add sorting stuff 
+
+---
+
+- author name (denied: bc of series tag)
