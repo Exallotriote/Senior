@@ -7,6 +7,7 @@
 - [x] turn "Currently Reading" into "Currently Reading /  Watching"
 - [x] add a way to remove a card
 - [x] add a way to move the cards up or down
+- [ ] send message through discord webhook everytime someone loads the page (i wanna know how often my page gets visited)
 - [ ] **make the forms stop looking like trash**
 - [ ] **star rating**
 - [ ] **add sorting stuff** 
