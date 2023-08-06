@@ -7,9 +7,9 @@
 - [x] turn "Currently Reading" into "Currently Reading /  Watching"
 - [x] add a way to remove a card
 - [x] add a way to move the cards up or down
+- [x] star rating
 - [ ] send message through discord webhook everytime someone loads the page (i wanna know how often my page gets visited)
 - [ ] **make the forms stop looking like trash**
-- [ ] **star rating**
 - [ ] **add sorting stuff** 
 - [ ] new card through link
 - [ ] make current info neccessary
@@ -17,7 +17,10 @@
 - [ ] add a way to add custom covers (im not really sure how this will work out)
 - [ ] add a way to back up data
 - [ ] maybe add integration with a database
+- [ ] change "Volumes" of chapters to "Chapters"
 
 ---
-
-- author name (denied: bc of series tag)
+### Bugs
+- when editting two cards, pressing "Save" on one card will save all other cards
+- when editting two cards, pressing "Save" on one card will save the last editted rating but set the rating for the other card to 1
+- when editting card, rating gets reset to 0. if saved without pressing any stars, the rating value will be saved as 1

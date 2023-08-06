@@ -15,6 +15,13 @@ while (count != senior_numbers) {
 	if (senior_data.seniors[count].type == 'Comic'){var chapter = 'Volume: '}
 	if (senior_data.seniors[count].type == 'Series'){var chapter = 'Episode: '}
 
+	/*Display star rating*/
+	if (senior_data.seniors[count].rating == 1){var rating_html = '<span class="star_html"><span class="star_html_color">★</span>★★★★</span>'}
+	if (senior_data.seniors[count].rating == 2){var rating_html = '<span class="star_html"><span class="star_html_color">★★</span>★★★</span>'}
+	if (senior_data.seniors[count].rating == 3){var rating_html = '<span class="star_html"><span class="star_html_color">★★★</span>★★</span>'}
+	if (senior_data.seniors[count].rating == 4){var rating_html = '<span class="star_html"><span class="star_html_color">★★★★</span>★</span>'}
+	if (senior_data.seniors[count].rating == 5){var rating_html = '<span class="star_html"><span class="star_html_color">★★★★★</span></span>'}
+
 	/*Appends the html for the novel cards*/
 	log(count)
 	senior_card_html = `
@@ -36,6 +43,7 @@ while (count != senior_numbers) {
 	<div class="senior-info">
 	<p><span class="faint">`+chapter+`</span><span class="data-chapter">`+senior_data.seniors[count].chapter+`</span></p>
 	<p><span class="faint">Status: </span><span class="data-status">`+senior_data.seniors[count].status+`<span></p>
+	<p><span class="faint">Rating: </span>`+rating_html+`</p>
 	</div>
 	
 	</div>`
@@ -77,6 +85,14 @@ function editCard(vari){
 	<select name='card-status' class='card-status'>
 		`+getStatusOptions()+`
 	</select>
+	<br><br>
+	<span>Rating: <span class='stars-font'>
+		<a href='javascript:editRating(1, "`+vari+`")' class='star1'>★</a>
+		<a href='javascript:editRating(2, "`+vari+`")' class='star2'>★</a>
+		<a href='javascript:editRating(3, "`+vari+`")' class='star3'>★</a>
+		<a href='javascript:editRating(4, "`+vari+`")' class='star4'>★</a>
+		<a href='javascript:editRating(5, "`+vari+`")' class='star5'>★</a>
+	</span></span>
 	<p>
 	<div class='edit-bottom edit'><a href="javascript:saveEdit('`+vari+`')">Save</a></div>
 	<div class='edit-bottom delete'><a href="javascript:deleteCard(`+vari.slice(10)+`)">Delete</a></div>
@@ -85,11 +101,32 @@ function editCard(vari){
 `
 }
 
+function editRating(vari, elem){
+	editted_rating = vari
+	
+	element(elem+' a.star1').classList.remove('yellow_star')
+	element(elem+' a.star2').classList.remove('yellow_star')
+	element(elem+' a.star3').classList.remove('yellow_star')
+	element(elem+' a.star4').classList.remove('yellow_star')
+	element(elem+' a.star5').classList.remove('yellow_star')
+	
+	element(elem+' a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element(elem+' a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element(elem+' a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element(elem+' a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element(elem+' a.star'+vari).classList.add('yellow_star')
+}
+
 function saveEdit(vari){
 	senior_data.seniors[vari.slice(10)].title = element(vari+' input.card-title').value
 	senior_data.seniors[vari.slice(10)].type = element(vari+' select.card-type').value
 	senior_data.seniors[vari.slice(10)].chapter = element(vari+' input.card-chapter').value
 	senior_data.seniors[vari.slice(10)].status = element(vari+' select.card-status').value
+	senior_data.seniors[vari.slice(10)].rating = editted_rating
 	localStorage.setItem('senior_db', JSON.stringify(senior_data))
 	reloadCard()
 }
@@ -117,6 +154,29 @@ function moveDown(vari){
 		reloadCard()
 	}
 }
+
+function rateStar(vari){
+	rating = vari
+	
+	element('span.stars-font a.star1').classList.remove('yellow_star')
+	element('span.stars-font a.star2').classList.remove('yellow_star')
+	element('span.stars-font a.star3').classList.remove('yellow_star')
+	element('span.stars-font a.star4').classList.remove('yellow_star')
+	element('span.stars-font a.star5').classList.remove('yellow_star')
+	
+	element('span.stars-font a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element('span.stars-font a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element('span.stars-font a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element('span.stars-font a.star'+vari).classList.add('yellow_star')
+	if (vari != 1){vari = vari-1}
+	element('span.stars-font a.star'+vari).classList.add('yellow_star')
+}
+
+
+
 /*da css*/
 addCSS(`
 	body{
@@ -182,6 +242,21 @@ addCSS(`
 		float: right;
 		color: #ff3333;	
 	}
+	span.stars-font a{
+		color: white;
+		font-size: 25px;
+		text-decoration: none;
+	}
+	span.stars-font a.yellow_star{
+		color: yellow;
+	}
+	span.star_html {
+		font-size: 25 px;
+		text-decoration: none;
+	}
+	span.star_html_color {
+		color: yellow;
+	}
 `)
 
 /*checks if senior_db alread exists. if not, it makes one*/
@@ -196,7 +271,7 @@ else {
 /*gets the inputs from the form, pushes them into the db, then reloads the cards*/
 function submit_senior(){
 	if (element('input.senior-title').value == ''){return}
-	senior_data.seniors.push({'title': element('input.senior-title').value, 'type': element('select.senior-type').value, 'chapter': element('input.senior-chapter').value, 'status': element('select.senior-status').value})
+	senior_data.seniors.push({'title': element('input.senior-title').value, 'type': element('select.senior-type').value, 'chapter': element('input.senior-chapter').value, 'status': element('select.senior-status').value, 'rating':rating})
 	localStorage.setItem('senior_db', JSON.stringify(senior_data))
 	log(senior_data)
 	reloadCard()
